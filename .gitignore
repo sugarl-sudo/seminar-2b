@@ -194,3 +194,6 @@ site/
 __pycache__
 .venv
 .idea
+
+# data
+data/

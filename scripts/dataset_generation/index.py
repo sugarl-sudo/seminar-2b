@@ -8,7 +8,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(PROJECT_ROOT / "src"))
 
-from datasets import save_index_dataset
+from gen_data import save_index_dataset
 
 
 def build_parser() -> argparse.ArgumentParser:
