@@ -33,9 +33,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--value-min", type=int, default=-9, help="Minimum input integer value (inclusive).")
     parser.add_argument("--value-max", type=int, default=9, help="Maximum input integer value (inclusive).")
     parser.add_argument(
-        "--inverse",
+        "--no-inverse",
         action="store_true",
-        help="Reverse output tokens (disabled when permutation is provided).",
+        help="Skip generation of reversed-output datasets (always skipped when permutation is provided).",
     )
     parser.add_argument(
         "--permutation",
@@ -70,7 +70,7 @@ def main() -> None:
             num_samples=args.train_samples,
             sequence_length=seq_len,
             seed=args.train_seed,
-            inverse=args.inverse,
+            inverse=False,
             permutation=permutation,
             value_min=args.value_min,
             value_max=args.value_max,
@@ -80,8 +80,36 @@ def main() -> None:
             num_samples=args.test_samples,
             sequence_length=seq_len,
             seed=args.test_seed,
-            inverse=args.inverse,
+            inverse=False,
             permutation=permutation,
+            value_min=args.value_min,
+            value_max=args.value_max,
+        )
+
+        if args.no_inverse:
+            continue
+
+        if permutation is not None:
+            print("  Skipping inverse outputs because permutation was provided.")
+            continue
+
+        save_relu_dataset(
+            seq_dir / "data-inv.train",
+            num_samples=args.train_samples,
+            sequence_length=seq_len,
+            seed=args.train_seed,
+            inverse=True,
+            permutation=None,
+            value_min=args.value_min,
+            value_max=args.value_max,
+        )
+        save_relu_dataset(
+            seq_dir / "data-inv.test",
+            num_samples=args.test_samples,
+            sequence_length=seq_len,
+            seed=args.test_seed,
+            inverse=True,
+            permutation=None,
             value_min=args.value_min,
             value_max=args.value_max,
         )

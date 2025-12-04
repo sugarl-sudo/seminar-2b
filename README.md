@@ -56,3 +56,27 @@ python scripts/dataset_generation/index.py \
 ```
 
 サンプル数・シード・逆順/順列切り替え・入力値レンジなど主要フラグは、各 CLI の `--help` から調整可能です。
+
+### 🔁 逆順データ生成の指定方法
+
+- **ReLU / Square / Index 共通**: 何も指定しなければ正順 (`data.*`) と逆順 (`data-inv.*`) の両方が生成されます。逆順を省きたい場合は CLI に `--no-inverse` を付けてください。
+- **ReLU + 順列指定**: `--permutation` を与えた場合のみ、逆順データは自動的にスキップされます（順列と逆順は同時指定不可のため）。
+
+```bash
+# 例: ReLU (正順+逆順を一括生成)
+python scripts/dataset_generation/relu.py \
+  --sequence-lengths 10 \
+  --output-root data/relu/
+
+# 例: Square と Index も同様に --no-inverse で逆順を省略可能
+python scripts/dataset_generation/square.py \
+  --sequence-lengths 10 \
+  --output-root data/square/ \
+  --no-inverse
+
+python scripts/dataset_generation/index.py \
+  --sequence-lengths 13 31 \
+  --m 2 \
+  --output-root data/index/ \
+  --no-inverse
+```
