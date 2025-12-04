@@ -13,10 +13,10 @@ def ensure_directory(path: Path) -> None:
 
 
 def format_pair(inputs: Sequence[int], outputs: Sequence[int]) -> str:
-    """Format a single input/output pair as ``\"x : y\"``."""
+    """Format a single input/output pair using the CALT \"input # output\" format."""
     input_str = " ".join(map(str, inputs))
     output_str = " ".join(map(str, outputs))
-    return f"{input_str} : {output_str}"
+    return f"{input_str} # {output_str}"
 
 
 def write_pairs(samples: Iterable[Sample], output_path: Path) -> None:

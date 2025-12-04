@@ -32,6 +32,7 @@ data:
   field: ZZ
   num_train_samples: -1
   num_test_samples: -1
+  processor_name: plain
 
 wandb:
   project: seminar-2b

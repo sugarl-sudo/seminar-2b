@@ -10,14 +10,11 @@ import click
 from omegaconf import OmegaConf
 from transformers import BartConfig, TrainingArguments
 from transformers import BartForConditionalGeneration as Transformer
-from calt import (
-    Trainer,
-    count_cuda_devices,
-)
-from calt import load_data
+from calt import Trainer, count_cuda_devices, load_data
 import wandb
 
 from utils.training_utils import fix_seeds
+from utils.plain_text_preprocessor import PlainTextPreprocessor
 
 
 @click.command()
@@ -70,6 +67,12 @@ def main(config, dryrun, no_wandb):
         )
 
     # Load dataset
+    processor_name = getattr(cfg.data, "processor_name", None)
+    processor = None
+    if processor_name == "plain":
+        processor = PlainTextPreprocessor(max_coeff=cfg.data.max_coeff)
+        processor_name = None
+
     dataset, tokenizer, data_collator = load_data(
         train_dataset_path=cfg.data.train_dataset_path,
         test_dataset_path=cfg.data.test_dataset_path,
@@ -80,6 +83,8 @@ def main(config, dryrun, no_wandb):
         max_length=cfg.model.max_sequence_length,
         num_train_samples=cfg.data.num_train_samples,
         num_test_samples=cfg.data.num_test_samples,
+        processor_name=processor_name,
+        processor=processor,
     )
 
     # Load model
@@ -104,6 +109,7 @@ def main(config, dryrun, no_wandb):
     model = Transformer(config=model_cfg)
 
     # Set up trainer
+    report_to = [] if cfg.wandb.no_wandb else ["wandb"]
     args = TrainingArguments(
         output_dir=cfg.train.output_dir,
         num_train_epochs=cfg.train.num_train_epochs,
@@ -131,7 +137,7 @@ def main(config, dryrun, no_wandb):
         # Logging settings
         logging_strategy="steps",
         logging_steps=50,
-        report_to="wandb",
+        report_to=report_to,
         # Others
         remove_unused_columns=False,
         seed=cfg.train.seed,
@@ -158,8 +164,9 @@ def main(config, dryrun, no_wandb):
     metrics["test_success_rate"] = success_rate
 
     trainer.save_metrics("all", metrics)
-    wandb.log(metrics)
-    wandb.finish()
+    if not cfg.wandb.no_wandb:
+        wandb.log(metrics)
+        wandb.finish()
 
 
 if __name__ == "__main__":
