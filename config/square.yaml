@@ -24,8 +24,8 @@ train:
   dryrun: False
 
 data:
-  train_dataset_path: data/square/n=10/data/train.txt
-  test_dataset_path: data/square/n=10/data/test.txt
+  train_dataset_path: data/square/n=10/data.train
+  test_dataset_path: data/square/n=10/data.test
   num_variables: 0
   max_degree: 20
   max_coeff: 500
