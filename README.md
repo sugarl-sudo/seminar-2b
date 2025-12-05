@@ -1,5 +1,7 @@
 # 先進科学セミナー2B
 実験コードリポジトリ
+この環境はcaltというデータセット生成とモデル学習用のライブラリをベースにして作成しています．
+https://github.com/HiroshiKERA/calt-codebase
 
 
 ## 🚀 クイックスタート

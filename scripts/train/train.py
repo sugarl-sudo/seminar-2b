@@ -8,9 +8,12 @@ os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
 
 import click
 from omegaconf import OmegaConf
-from transformers import BartConfig, TrainingArguments
-from transformers import BartForConditionalGeneration as Transformer
+from transformers import TrainingArguments
 from calt import Trainer, count_cuda_devices, load_data
+from calt.models import (
+    CaltModel,
+    CaltModelConfig,
+)
 import wandb
 
 from utils.training_utils import fix_seeds
@@ -88,7 +91,7 @@ def main(config, dryrun, no_wandb):
     )
 
     # Load model
-    model_cfg = BartConfig(
+    model_cfg = CaltModelConfig(
         encoder_layers=cfg.model.num_encoder_layers,
         encoder_attention_heads=cfg.model.num_encoder_heads,
         decoder_layers=cfg.model.num_decoder_layers,
@@ -106,7 +109,7 @@ def main(config, dryrun, no_wandb):
         max_position_embeddings=cfg.model.max_sequence_length,
         decoder_start_token_id=tokenizer.bos_token_id,
     )
-    model = Transformer(config=model_cfg)
+    model = CaltModel(config=model_cfg)
 
     # Set up trainer
     report_to = [] if cfg.wandb.no_wandb else ["wandb"]
