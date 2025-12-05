@@ -1,5 +1,6 @@
-import os 
+import os
 import sys
+
 sys.path.append("src")
 
 # Environment variables for reproducibility
@@ -8,12 +9,14 @@ os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
 
 import click
 from omegaconf import OmegaConf
-from transformers import TrainingArguments
+from transformers import TrainingArguments, BartConfig
+from transformers import BartForConditionalGeneration as Transformer
 from calt import Trainer, count_cuda_devices, load_data
-from calt.models import (
-    CaltModel,
-    CaltModelConfig,
-)
+
+# from calt.models import (
+#     CaltModel,
+#     CaltModelConfig,
+# )
 import wandb
 
 from utils.training_utils import fix_seeds
@@ -91,7 +94,7 @@ def main(config, dryrun, no_wandb):
     )
 
     # Load model
-    model_cfg = CaltModelConfig(
+    model_cfg = BartConfig(
         encoder_layers=cfg.model.num_encoder_layers,
         encoder_attention_heads=cfg.model.num_encoder_heads,
         decoder_layers=cfg.model.num_decoder_layers,
@@ -109,7 +112,7 @@ def main(config, dryrun, no_wandb):
         max_position_embeddings=cfg.model.max_sequence_length,
         decoder_start_token_id=tokenizer.bos_token_id,
     )
-    model = CaltModel(config=model_cfg)
+    model = Transformer(config=model_cfg)
 
     # Set up trainer
     report_to = [] if cfg.wandb.no_wandb else ["wandb"]
@@ -121,9 +124,7 @@ def main(config, dryrun, no_wandb):
         warmup_ratio=cfg.train.warmup_ratio,
         per_device_train_batch_size=cfg.train.batch_size // count_cuda_devices(),
         per_device_eval_batch_size=cfg.train.test_batch_size // count_cuda_devices(),
-        lr_scheduler_type="constant"
-        if cfg.train.lr_scheduler_type == "constant"
-        else "linear",
+        lr_scheduler_type="constant" if cfg.train.lr_scheduler_type == "constant" else "linear",
         max_grad_norm=cfg.train.max_grad_norm,
         optim=cfg.train.optimizer,  # Set optimizer type
         # Dataloader settings
