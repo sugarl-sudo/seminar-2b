@@ -10,7 +10,7 @@ model:
   
 train:
   output_dir: results/index-inv/n=31_m=2
-  num_train_epochs: 3
+  num_train_epochs: 10
   learning_rate: 0.0001
   weight_decay: 0.01
   warmup_ratio: 0.1

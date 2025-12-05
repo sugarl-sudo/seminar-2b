@@ -1,7 +1,7 @@
 model:
-  num_encoder_layers: 1
+  num_encoder_layers: 3
   num_encoder_heads: 1
-  num_decoder_layers: 1
+  num_decoder_layers: 3
   num_decoder_heads: 1
   d_model: 512
   encoder_ffn_dim: 2048
@@ -10,7 +10,7 @@ model:
   
 train:
   output_dir: results/index/n=31_m=2
-  num_train_epochs: 3
+  num_train_epochs: 10
   learning_rate: 0.0001
   weight_decay: 0.01
   warmup_ratio: 0.1
