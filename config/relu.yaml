@@ -10,7 +10,7 @@ model:
   
 train:
   output_dir: results/relu/n=10
-  num_train_epochs: 10
+  num_train_epochs: 3
   learning_rate: 0.0001
   weight_decay: 0.01
   warmup_ratio: 0.1
@@ -24,8 +24,8 @@ train:
   dryrun: False
 
 data:
-  train_dataset_path: data/relu/n=10/data.train
-  test_dataset_path: data/relu/n=10/data.test
+  train_dataset_path: data/relu/n=30/data.train
+  test_dataset_path: data/relu/n=30/data.test
   num_variables: 0
   max_degree: 20
   max_coeff: 500
@@ -37,5 +37,5 @@ data:
 wandb:
   project: seminar-2b
   group: relu
-  name: n=10
+  name: n=30
   no_wandb: False
