@@ -80,3 +80,27 @@ python scripts/dataset_generation/index.py \
   --output-root data/index/ \
   --no-inverse
 ```
+
+## 🧠 学習ジョブの実行
+
+`scripts/train/train.py` は Hugging Face `Trainer` + CALT のデータローダを使った共通ランチャーです。訓練条件は `config/*.yaml` で管理しており、データパスを差し替えた逆順用設定 (`config/relu_inverse.yaml` など) も用意しています。
+
+```bash
+# 順方向 ReLU (n=10)
+python scripts/train/train.py --config config/relu.yaml
+
+# 逆順 ReLU (data-inv.* を使用)
+python scripts/train/train.py --config config/relu_inverse.yaml
+
+# Square / Index なども同様に
+python scripts/train/train.py --config config/square.yaml
+python scripts/train/train.py --config config/square_inverse.yaml
+python scripts/train/train.py --config config/index.yaml
+python scripts/train/train.py --config config/index_inverse.yaml
+```
+
+### オプション
+- `--dryrun`: 1 エポック / 1000 サンプルに縮小してセットアップを素早く検証。
+- `--no_wandb`: Weights & Biases へのログ送信を無効化。
+
+その他タスク（Square, Index など）も同様に `config/` 以下の設定ファイルを複製し、`data.*` → `data-inv.*` に置き換えるだけで逆順データ学習の設定を追加できます。
