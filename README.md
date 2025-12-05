@@ -1,38 +1,19 @@
-# CALT コードベース
+# 先進科学セミナー2B
+実験コードリポジトリ
 
-[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://hiroshikera.github.io/calt-codebase/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-View%20Documentation-blue.svg)](https://hiroshikera.github.io/calt-codebase/)
-
-> 📖 **📚 [ドキュメント全体はこちら](https://hiroshikera.github.io/calt-codebase/)**
-
-[CALT (Computer ALgebra with Transformer) ライブラリ](https://github.com/HiroshiKERA/calt)を用いて、算術・記号計算タスクのデータ生成と Transformer モデルの学習を行うためのテンプレートです。
 
 ## 🚀 クイックスタート
 
 CALT は `pip install calt-x` で導入できます。以下は全依存関係を含む最小セットアップ例です。
 
 ```bash
-git clone https://github.com/HiroshiKERA/calt-codebase.git
-cd calt-codebase
+git clone https://github.com/sugarl-sudo/seminar-2b.git
+cd seminar-2b
 conda env create -f environment.yml
 ```
 
-## 📖 ドキュメント
-
-- **📚 [フルドキュメント](https://hiroshikera.github.io/calt-codebase/)**: クイックスタートとプロジェクト構成の詳細
-- **⚡ [クイックスタートガイド](https://hiroshikera.github.io/calt-codebase/quickstart/)**: すぐに実験を始めるための手順
-
-CALT ライブラリ自体の利用方法は [公式ドキュメント](https://hiroshikera.github.io/calt/) を参照してください。
-
-## 🔗 リンク集
-
-- [📖 ドキュメント](https://hiroshikera.github.io/calt-codebase/)
-- [🐛 Issue](https://github.com/HiroshiKERA/calt-codebase/issues)
-- [💬 Discussions](https://github.com/HiroshiKERA/calt-codebase/discussions)
-
 ## 📦 データセット生成 (Chain-of-Thought 系タスク)
-
-`Chain-of-Thought-in-Order` 実験で用いたデータセットを、本リポジトリから直接再現できます。各スクリプトは `input : output` 形式で書き出し、`output_root/n=XX/...` という同じディレクトリ構造を維持します。
+各スクリプトは `input : output` 形式で書き出し、`output_root/n=XX/...` という同じディレクトリ構造を維持します。
 
 ```bash
 # ReLU 累積タスク
